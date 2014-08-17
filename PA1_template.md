@@ -232,7 +232,7 @@ Frequency of Total number of steps was highest was increased after setting missi
         
         library(lattice)
 
-        xyplot(steps~interval|days, data,type = "l")
+        xyplot(steps~interval|days, data,type = "l", layout=c(1,2))
 ```
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
