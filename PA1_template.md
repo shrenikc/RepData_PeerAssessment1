@@ -213,3 +213,26 @@ Values and Charts diifer when compared with data with completed cases and data w
 
 Frequency of Total number of steps was highest was increased after setting missing data
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+```r
+        #dailysteps<-ddply(data,.(date),summarize,sum=sum(steps), 
+         #                   mean=mean(steps), median=median(steps))
+
+        days<-weekdays(as.Date(data[,"date"]))
+        for(i in 1:length(days)){
+                if(days[i] == "Sunday" | days[i] == "Saturday") {
+                        days[i]<-"Weekend"     
+                } else {
+                        days[i]<-"Weekday"     
+                }
+        }
+
+        data<-cbind(data, days)
+        
+        library(lattice)
+
+        xyplot(steps~interval|days, data,type = "l")
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
