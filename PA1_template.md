@@ -102,9 +102,19 @@
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
+```r
+        mostactiveinterval<-intervaldata[which.max(intervaldata$mean),"interval"]
+```
+
+On average Interval ID = 835 contains the maximum number of steps
 
 ## Imputing missing values
 
 
+```r
+        incompleterecords<-nrow(data)-nrow(completed)
+```
+
+Total number of missing records = 2304
 
 ## Are there differences in activity patterns between weekdays and weekends?
