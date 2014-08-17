@@ -46,10 +46,36 @@ On average Interval ID = `r mostactiveinterval` contains the maximum number of s
 ## Imputing missing values
 
 ```{r}
+        # Find number of incomplete records
         incompleterecords<-nrow(data)-nrow(completed)
-
 ```
 
 Total number of missing records = `r incompleterecords`
 
+```{r}
+        # Set default value for number of steps where value is NA
+        # Use mean value from Interval Data
+        for (i in 1:nrow(data)) {
+                row<-data[i,]
+                count<-0
+                if(is.na(row$steps)) {
+                        
+                        data[i,"steps"] <-intervaldata[intervaldata$interval==row$interval, "mean"]
+                }
+        }
+
+        dailysteps<-ddply(data,.(date),summarize,sum=sum(steps), 
+                          mean=mean(steps), median=median(steps))
+
+        hist(dailysteps$sum,xlab = "Total Steps", 
+             main="Total Steps Taken Each Day", col = "red", breaks=20 )
+
+        
+        dailysteps[,c("date", "mean","median")]
+
+```
+
+Values and Charts diifer when compared with data with completed cases and data with NA replaced with mean values for specific 5 min Interval.
+
+Frequency of Total number of steps was highest was increased after setting missing data
 ## Are there differences in activity patterns between weekdays and weekends?
