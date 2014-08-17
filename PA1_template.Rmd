@@ -1,20 +1,55 @@
 # Reproducible Research: Peer Assessment 1
 
-
 ## Loading and preprocessing the data
+```{r loaddata}
+        setwd("c:/r/knitr//RepData_PeerAssessment1")
+        data<-read.csv(file = "activity.csv")
+```
 
 
 
 ## What is mean total number of steps taken per day?
 
+```{r}
+        # For this Assignment consider only those observations 
+        # for which all data is present
+        completed <-data[complete.cases(data),]
 
+        # Create new data frame with list of dates and sum, 
+        # mean and median of steps taken for that particular day
+        library(plyr)
+        dailysteps<-ddply(completed,.(date),summarize,sum=sum(steps), 
+                          mean=mean(steps), median=median(steps))
+
+        hist(dailysteps$sum,xlab = "Total Steps", 
+             main="Total Steps Taken Each Day", col = "red", breaks=20 )
+
+        
+        dailysteps[,c("date", "mean","median")]
+
+
+```
 
 ## What is the average daily activity pattern?
 
+```{r}
+        intervaldata<-ddply(completed,.(interval),summarize,sum=sum(steps), 
+                            mean=mean(steps), median=median(steps))
+        plot(intervaldata$interval, intervaldata$mean, type="l", col="blue", 
+             xlab="5 mins Interval ID", ylab="Average number of steps")
 
+        mostactiveinterval<-intervaldata[which.max(intervaldata$mean),"interval"]
+```
+
+On average Interval ID = `r mostactiveinterval` contains the maximum number of steps
 
 ## Imputing missing values
 
+```{r}
+        incompleterecords<-nrow(data)-nrow(completed)
 
+```
+
+Total number of missing records = `r incompleterecords`
 
 ## Are there differences in activity patterns between weekdays and weekends?
